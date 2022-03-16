@@ -8,144 +8,45 @@ namespace Authentication
 {
     class Program
     {
-        //int tambahgaji(int a, int b)
-        //{
-        //    return a + b;
-        //}
+        public static List<Data> data = new List<Data>();
         static void Main(String[] args)
         {
 
-            /*List<string> np = new List<string>();
-            List<string> nk = new List<string>();
-            List<int> gaji = new List<int>();
-            Employee employee = new Employee();*/
-
-            /*Employee Data1 = new Employee();
-            Employee DI = new Employee();
-            List<Employee> employee = new List<Employee>();
-            string perulangan;*/
-
-
-            /*Console.WriteLine("Silahkan masukan nama anda ");
-            string nama = Console.ReadLine();*/
-
-            //List<Data> data = new List<Data>();
-            List<Data> data = new List<Data>();
             bool stop = false;
 
-            while(!stop)
+            while (!stop)
             {
-                Data DI = new Data();   
-                Login logon = new Login();
-                Console.Clear();
-                Console.WriteLine("== Basic Authentication ==");
-                Console.WriteLine("1. Create User  ");
-                Console.WriteLine("2. Show User ");
-                Console.WriteLine("3. Search ");
-                Console.WriteLine("4. Login");
-                Console.WriteLine("5. Exit");
+                Menu();
                 string pil = Console.ReadLine();
                 pil.ToLower();
 
                 if (pil == "1")
                 {
-                    //string FN, LN, UN, PW;
                     Console.Clear();
-                    Console.WriteLine("== Create User ==");
-                    Console.Write("Firstname : ");
-                    DI.FN = Console.ReadLine();
-
-                    Console.Write("Lastname : ");
-                    DI.LN = Console.ReadLine();
-
-                    DI.UN = DI.FN.Substring(0, 2).ToLower() + DI.LN.Substring(0, 2).ToLower();
-
-                    Console.Write("Password : ");
-                    DI.PW = Console.ReadLine();
-                    DI.PW = BCrypt.Net.BCrypt.HashPassword(DI.PW);
-
-                    data.Add(DI);
+                    BuatUser();
+                    Console.ReadKey();
+                    
                 }
 
                 else if (pil == "2")
                 {
                     Console.Clear();
-                    foreach (var item in data)
-                    {
-
-                        item.Menampilkan();
-
-                    }
+                    Menampilkan();                   
                     Console.ReadKey();
 
 
                 }
                 else if (pil == "3")
                 {
-                    stop = false;
+                    Console.Clear();
+                    Find();
+                    Console.ReadKey();
 
                 }
                 else if (pil == "4")
                 {
-                    /*Console.Clear();
-                    Console.Write("Username : ");
-                    user = Console.ReadLine();
-                    Console.Write("Password : ");
-                    pass = Console.ReadLine();
-                    Data.login(user, pass);
-                    Console.ReadKey();
-                */
-                    /*    Console.Clear();
-                        Console.Write("Username : ");
-                        name = Console.ReadLine();
-                        Console.Write("Password : ");
-                        pass = Console.ReadLine();
-                        if (name == DI.UN && pass == DI.PW)
-                        {
-
-                            Console.WriteLine("log in successfully");
-                        }
-                        else if (name == DI.UN && pass != DI.PW)
-                        {
-                            Console.WriteLine("password salah");
-                        }
-                        else if (name != DI.UN && pass == DI.PW)
-                        {
-                            Console.WriteLine("username salah");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Username dan Password Salah");
-                        }
-                        Console.ReadKey();*/
-
-                    logon.login();
-
-                    var item = data.FirstOrDefault(s => s.UN == logon.name);
-                    var item2 = data.FirstOrDefault(s => s.PW == logon.pass);
-                    /*var item = data.Where(x => x.UN = logon.name);
-                      var item2 = data.Where(x => x.PW = logon.pass);*/
-
-
-                    if (logon.name == item.UN && BCrypt.Net.BCrypt.Verify(logon.pass, item2.PW))
-                    {
-
-                        Console.WriteLine("log in successfully");
-                    }
-                    else if (logon.name == item.UN && logon.pass != item2.PW)
-                    {
-                        Console.WriteLine("password salah");
-                    }
-                    else if (logon.name != item.UN && logon.pass == item2.PW)
-                    {
-                        Console.WriteLine("username salah");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Username dan Password Salah");
-                    }
-
-
+                    Console.Clear();
+                    Logon();
                     Console.ReadKey();
                 }
                 else if (pil == "5")
@@ -154,13 +55,132 @@ namespace Authentication
                 }
 
 
-            } 
+            }
+
+
 
         }
 
+        public static void Menu() 
+        {
+            Console.Clear();
+            Console.WriteLine("== Basic Authentication ==");
+            Console.WriteLine("1. Create User  ");
+            Console.WriteLine("2. Show User ");
+            Console.WriteLine("3. Search ");
+            Console.WriteLine("4. Login");
+            Console.WriteLine("5. Exit");
+        }
+
+        public static void BuatUser() 
+        {
+            Console.Clear();
+            Console.WriteLine("== Create User ==");
+            Console.Write("Firstname : ");
+            string Fname = Console.ReadLine();
+
+            Console.Write("Lastname : ");
+            string Lname = Console.ReadLine();
+
+            //UN = FN.Substring(0, 2).ToLower() + LN.Substring(0, 2).ToLower();
+
+            Console.Write("Password : ");
+            string Pw = Console.ReadLine();
+            Pw = BCrypt.Net.BCrypt.HashPassword(Pw);
+
+            data.Add(new Data(Fname, Lname, BCrypt.Net.BCrypt.HashPassword(Pw), NamaPengguna(Fname.Substring(0,2),Lname.Substring(0,2))));
+            Console.WriteLine("Akun Sukses Dibuat");
+
+
+        }
+
+        public static string NamaPengguna(string a, string b) 
+        {
+            Random acak = new Random();
+            string c = a.ToLower() + b.ToLower();
+            int index = data.FindIndex(data => data.UN == c);
+            if(index != -1)
+            {
+                c += acak.Next(10, 100);
+            }
+            return c;
+        
+        }
+
+        public static void Menampilkan()
+        {
+            foreach(var item in data) 
+            { 
+            Console.WriteLine("====================================");
+            Console.WriteLine($"Name : {item.FN} {item.LN}");
+            Console.WriteLine($"Username : {item.UN} ");
+            Console.WriteLine($"Password : {item.PW} ");
+            Console.WriteLine("====================================");
+            }
+        }
+
+        public static void Find() 
+        {
+            Console.Write("Cari : ");
+            string Cari = Console.ReadLine();
+            List<Data> data2 = data.FindAll(
+            data2 => data2.FN.ToLower().Contains(Cari.ToLower()) || 
+                     data2.LN.ToLower().Contains(Cari.ToLower()) || 
+                     data2.UN.ToLower().Contains(Cari.ToLower()));
+
+            if (data2.Count == 0)
+            {
+                Console.WriteLine("Tidak Ditemukan");
+            }
+            else
+            {
+                foreach (var item in data2)
+                {
+                    Console.WriteLine("====================================");
+                    Console.WriteLine($"Name : {item.FN} {item.LN}");
+                    Console.WriteLine($"Username : {item.UN} ");
+                    Console.WriteLine($"Password : {item.PW} ");
+                    Console.WriteLine("====================================");
+                }
+            }
+
+        }
+        public static void Logon()
+        {
+            Console.Clear();
+            Console.WriteLine("==LOGIN==");
+            Console.Write("USERNAME : ");
+            string username = Console.ReadLine();
+            Console.Write("PASSWORD : ");
+            string password = Console.ReadLine();
+            VerifyLogin(username, password);
+        }
+        public static void VerifyLogin(string username, string password)
+        {
+            int index = data.FindIndex(user => user.UN == username);
+            if (index != -1)
+            {
+                // jika ada cocokan password user 
+                if (BCrypt.Net.BCrypt.Verify(password, data[index].PW))
+                {
+                    Console.WriteLine($"Login Successfully. Logged in as {data[index].UN}");
+                }
+                else
+                {
+                    Console.WriteLine($"!! Wrong Username or Password !!");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"!! Username Not Found !!");
+            }
 
 
 
+
+        }
+    
+        
+    
     }
-
 }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "hWVlQy3TqRnFHNbzPyMlx/RB/2/yyLPgr8zTsfc3OUqGxVYO/WmoXalR7pnuDSlH4tAQWHJYKPzBCugG1RSmag==",
+  "dgSpecHash": "6OpLRc0al0+4dyZ2Dzqfb1k6M1FQpgKSuuoeoRvD3VUsPZ1zjw4h8ND77+ivcz2GqEUpFBRvrDseYN5F3Qp5eQ==",
   "success": true,
-  "projectFilePath": "E:\\MATERI METRODATA\\FUNdamental C#\\Authentication\\Authentication\\Authentication.csproj",
+  "projectFilePath": "E:\\MATERI METRODATA\\Authentication-1\\Authentication\\Authentication.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ASUS\\.nuget\\packages\\azure.core\\1.20.0\\azure.core.1.20.0.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\azure.identity\\1.5.0\\azure.identity.1.5.0.nupkg.sha512",
